@@ -2,20 +2,34 @@
 {% block mainBody %}
 
 <!-- 水平線 -->
-<table border="10" cellpadding="5" width="400">
+<table border="5" cellpadding="5" width="match_parent">
 	<!-- 行列： border="外框粗度", width="左右保留間格長(像素)", cellpadding="上下保留間格長(像素)" -->
 	<tr>
 		<!-- 第一行 -->
-		<td>股票代碼</td><!-- 第一列 -->
-		<td>最高點</td><!-- 第二列 -->
-		<td>最低點</td><!-- 第三列 -->
-		<td>漲跌幅</td><!-- 第四列 -->
+		<td>查詢時間</td>
+		<td>股票代號</td>
+		<td>股票名稱</td>
+		<td>股票全名</td>
+		<td>最佳買入價(best bid price)</td>
+		<td>最佳買入數量(best bid volume)</td>
+		<td>最佳賣出價(best ask price)</td>
+		<td>最佳賣出數量(best ask volume)</td>
+		<td>開盤價</td>
+		<td>最高價</td>
+		<td>最低價</td>
 	</tr>
 	<tr>
-		<td>{{Data.col1}}</td>
-		<td>{{Data.col2}}</td>
-		<td>{{Data.col3}}</td>
-		<td>{{Data.col4}}</td>
+		<td>{{Data.time}}</td>
+		<td>{{Data.stock_symbol}}</td>
+		<td>{{Data.name}}</td>
+		<td>{{Data.fullname}}</td>
+		<td>{{Data.best_bit_price}}</td>
+		<td>{{Data.best_bit_volume}}</td>
+		<td>{{Data.best_ask_price}}</td>
+		<td>{{Data.best_ask_volume}}</td>
+		<td>{{Data.open}}</td>
+		<td>{{Data.high}}</td>
+		<td>{{Data.low}}</td>
 	</tr>
 	<tr></tr>
 </table>
