@@ -2,7 +2,7 @@ from django.shortcuts import render
 from Stock.models import stock_data
 from django.http import JsonResponse
 import twstock
-
+import datetime
 # Create your views here.
 
 
@@ -124,6 +124,7 @@ def home(request):
 
 def search(request):
     data_dict = {}
+    error_message = None 
     # 強烈建議了解資料庫內部結構後再進行操作，例如下載DB.Browser可查看資料庫內容
     try:
         # 變數 = 資料庫名稱.方法(條件)   .first()是指符合條件的第一筆  #還有其他拿資料的方法
@@ -135,24 +136,37 @@ def search(request):
         # unit = stock_data.objects.filter(
         #     stock_symbol=Stock_Symbol
         # ).last()  # 讀取一筆資料
-
+    
         # 打包到字典
+        time = datetime.datetime.utcfromtimestamp(unit['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
+        stock_symbol = unit["info"]["code"]
+        name = unit["info"]["name"]
+        fullname = unit["info"]["fullname"]
+        best_bit_price = [str(price).rstrip('0').rstrip('.') if '.' in str(price) else str(price) for price in unit["realtime"]["best_bid_price"]]
+        best_bit_volume = list(map(str, unit["realtime"]["best_bid_volume"]))
+        best_ask_price = [str(price).rstrip('0').rstrip('.') if '.' in str(price) else str(price) for price in unit["realtime"]["best_ask_price"]]
+        best_ask_volume = list(map(str, unit["realtime"]["best_ask_volume"]))
+        open_price = str(unit["realtime"]["open"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["open"]) else str(unit["realtime"]["open"])
+        high_price = str(unit["realtime"]["high"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["high"]) else str(unit["realtime"]["high"])
+        low_price = str(unit["realtime"]["low"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["low"]) else str(unit["realtime"]["low"])
+                        
         data_dict = {
-            "time": unit["timestamp"],
-            "stock_symbol": unit["info"]["code"],
-            "name": unit["info"]["name"],
-            "fullname": unit["info"]["fullname"],
-            "best_bit_price": unit["realtime"]["best_bid_price"],
-            "best_bit_volume": unit["realtime"]["best_bid_volume"],
-            "best_ask_price": unit["realtime"]["best_ask_price"],
-            "best_ask_volume": unit["realtime"]["best_ask_volume"],
-            "open": unit["realtime"]["open"],
-            "high": unit["realtime"]["high"],
-            "low": unit["realtime"]["low"],
+            "time": time,
+            "stock_symbol":  stock_symbol,
+            "name":  name,
+            "fullname": fullname,
+            "best_bit_price": best_bit_price,
+            "best_bit_volume": best_bit_volume,
+            "best_ask_price":  best_ask_price,
+            "best_ask_volume": best_ask_volume,
+            "open": open_price,
+            "high": high_price,
+            "low":low_price,
         }
 
     except:
         print("Error")
+        error_message = "查無此資料"
 
         # 在HTML文件中使用的變數.KEY會映射出這邊的字典對應值
-    return render(request, "get_stock.html", {"Data": data_dict})
+    return render(request, "get_stock.html", {"Data": data_dict ,"error_message": error_message} )

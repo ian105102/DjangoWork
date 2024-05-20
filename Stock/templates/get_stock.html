@@ -1,37 +1,67 @@
 ﻿{% extends "base/base.html" %}
+{% load static %}
+{% block hend %}
+<link rel="stylesheet" href="{%static 'css/styles_get_stock.css' %}" >
+{% endblock hend %}
 {% block mainBody %}
+<div class="content">
+	{% if error_message != None %}
+		<h1 style="text-align: center;">查無此股票</h1>
+	{% else %}
+	<div class="stock_title">
+		<h2 class="fullname">{{Data.fullname}}</h2>
+		<br>
+		<h3 class="stock_name">{{Data.name}}</h3>
+		<h3 class="stock_symbol">{{Data.stock_symbol}}</h3>
+		<h3 class="time">{{Data.time}}</h3>
+	</div>
+	<div class="stock_table">
+		<table>
+			<thead>
+				<tr>
+				  <th class="title1" scope="col"  colspan="2">基礎資訊</th>
+				  <th class="title2" scope="col" colspan="6">四大買賣點</th>
+				</tr>
+			  </thead>
+			<tbody>
+				<tr>
+					<th scope="row"> 開盤價</th>
+					<td>{{Data.open}}</td>
+					<th scope="row">最佳買入價(best bid price)</th>
+					{% for i in Data.best_bit_price %}
+					<td>{{ i }}</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					<th scope="row">最高價</th>
+					<td>{{Data.high}}</td>
+					<th scope="row">最佳買入數量(best bid volume)</th>
+					{% for i in Data.best_bit_volume %}
+					<td>{{ i }}</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					<th scope="row">最低價</th>
+					<td>{{Data.low}}</td>
+					<th scope="row">最佳賣出價(best ask price)</th>
+					{% for i in Data.best_ask_price %}
+					<td>{{ i }}</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					<th scope="row"></th>
+					<td></td>
+					<th scope="row">	最佳賣出數量(best ask volume)</th>
+					{% for i in Data.best_ask_volume %}
+					<td>{{ i }}</td>
+					{% endfor %}
+				</tr>
+			</tbody>
+		</table>
+</div>
+	{% endif %}
+	<duv class="nothing" ></div>
+</div>
 
-<!-- 水平線 -->
-<table border="5" cellpadding="5" width="match_parent">
-	<!-- 行列： border="外框粗度", width="左右保留間格長(像素)", cellpadding="上下保留間格長(像素)" -->
-	<tr>
-		<!-- 第一行 -->
-		<td>查詢時間</td>
-		<td>股票代號</td>
-		<td>股票名稱</td>
-		<td>股票全名</td>
-		<td>最佳買入價(best bid price)</td>
-		<td>最佳買入數量(best bid volume)</td>
-		<td>最佳賣出價(best ask price)</td>
-		<td>最佳賣出數量(best ask volume)</td>
-		<td>開盤價</td>
-		<td>最高價</td>
-		<td>最低價</td>
-	</tr>
-	<tr>
-		<td>{{Data.time}}</td>
-		<td>{{Data.stock_symbol}}</td>
-		<td>{{Data.name}}</td>
-		<td>{{Data.fullname}}</td>
-		<td>{{Data.best_bit_price}}</td>
-		<td>{{Data.best_bit_volume}}</td>
-		<td>{{Data.best_ask_price}}</td>
-		<td>{{Data.best_ask_volume}}</td>
-		<td>{{Data.open}}</td>
-		<td>{{Data.high}}</td>
-		<td>{{Data.low}}</td>
-	</tr>
-	<tr></tr>
-</table>
 
 {% endblock mainBody %}
