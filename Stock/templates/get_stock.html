@@ -61,9 +61,26 @@
 		</table>
 </div>
 	{% endif %}
+	<div class="chart">
+		<label for="formGroupExampleInput" class="form-label">輸入圖表類型</label>
+		<select class="form-select select_len" aria-label="Default select example">
+			<option value="0">請選擇圖表</option>
+			<option value="1">年表</option>
+			<option value="2">月表</option>
+		</select>
+
+		<div class="_year_select">
+		</div>
+		<div class="_month_select">
+		</div>
+	</div>
 	<duv class="nothing" ></div>
 </div>
+<script>
+	const all_month = {{Data.all_month}};
+</script>
 <script src="{%static 'js/vanilla-tilt.js' %}"></script>
 <script src="{%static 'js/tilt_.js' %}"></script>
+<script src="{%static 'js/select_get_stock.js' %}"></script>
 
 {% endblock mainBody %}

@@ -70,3 +70,15 @@
 .stock_table th{
     padding-left: 10px;
 }
+.chart{
+    margin: auto;
+    width: 98%;
+    padding: 10px;
+    background-color: rgb(234, 239, 244);
+    border-radius: 20px;
+}
+.chart ._year_select,
+.chart ._month_select{
+    margin: 20px;
+   
+}

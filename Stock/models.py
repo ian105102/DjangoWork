@@ -29,3 +29,5 @@ class stock_data(models.Model):
 
     def __str__(self):
         return self.stock_symbol 
+class stock_info(models.Model):
+    stock_renew_date = models.CharField(max_length=25 , null=True, blank=True)

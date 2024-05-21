@@ -1,13 +1,15 @@
 from django.shortcuts import render
-from Stock.models import stock_data
+from Stock.models import stock_data , stock_info
 from django.http import JsonResponse
 import twstock
-import datetime
+from datetime import datetime
+import json
 # Create your views here.
 
 
+
+
 def get(request):
-    t = 0
     stock_symbols = [
         "2330",
         "2317",
@@ -20,9 +22,25 @@ def get(request):
         "2891",
         "2892",
     ]
+    
     for symbol in stock_symbols:
         stock = twstock.Stock(symbol)
-        historical_data = stock.fetch_from(2023, 4)  # 2023/4/到現在
+
+        # 創建或獲取 stock_info 物件
+        stock_info_record, created = stock_info.objects.get_or_create()
+
+        if created or not stock_info_record.stock_renew_date:
+            # 若是新記錄或沒有更新日期，設置一個默認的起始日期
+            start_year = 2023
+            start_month = 4
+        else:
+            # 從上次更新日期開始
+            last_update = datetime.strptime(stock_info_record.stock_renew_date, '%Y-%m-%d')
+            start_year = last_update.year
+            start_month = last_update.month
+        
+
+        historical_data = stock.fetch_from(start_year, start_month)
 
         for data in historical_data:
             stock_data.objects.update_or_create(
@@ -39,9 +57,16 @@ def get(request):
                     "trans_action": data.transaction,
                 },
             )
-    t += 1
+
+        # 更新 stock_info 的更新日期到最新的日期
+    if historical_data:
+        last_date = historical_data[-1].date.strftime('%Y-%m-%d')
+        stock_info_record.stock_renew_date = last_date
+        stock_info_record.save()
+
     data = {"message": "資料已成功存入資料庫"}
     return JsonResponse(data)
+
 
 
 def home(request):
@@ -132,13 +157,36 @@ def search(request):
 
         twstock.realtime.mock = False
         unit = twstock.realtime.get(Stock_Symbol)
+        
+        
+        first_date = stock_data.objects.order_by('date').values_list('date', flat=True).first()
+        # 獲取最後一個日期
+        last_date = stock_data.objects.order_by('-date').values_list('date', flat=True).first()
 
+        # 去除時間部分
+        first_date = first_date.split()[0]
+        last_date = last_date.split()[0]
+
+        # 轉換為 datetime 對象
+        first_date = datetime.strptime(first_date, '%Y-%m-%d')
+        last_date = datetime.strptime(last_date, '%Y-%m-%d')
+
+        # 提取年份和月份
+        first_year = first_date.year
+        last_year = last_date.year
+        first_month = first_date.month
+        last_month = last_date.month
+
+        # 生成所有的年份和月份
+        all_year = [i for i in range(first_year, last_year + 1)]
+        all_month = {i: [j for j in range(1, 13)] for i in all_year}
+        all_month[first_year] = [i for i in range(first_month, 13)]
+        all_month[last_year] = [i for i in range(1, last_month + 1)]
         # unit = stock_data.objects.filter(
         #     stock_symbol=Stock_Symbol
         # ).last()  # 讀取一筆資料
-    
         # 打包到字典
-        time = datetime.datetime.utcfromtimestamp(unit['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
+        time = datetime.utcfromtimestamp(unit['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
         stock_symbol = unit["info"]["code"]
         name = unit["info"]["name"]
         fullname = unit["info"]["fullname"]
@@ -162,10 +210,14 @@ def search(request):
             "open": open_price,
             "high": high_price,
             "low":low_price,
+            "last_date": last_date,
+            "first_date": first_date,
+            "all_month": all_month, 
+            "all_year": all_year,
         }
 
-    except:
-        print("Error")
+    except Exception as e:
+        print("Error: ", e)
         error_message = "查無此資料"
 
         # 在HTML文件中使用的變數.KEY會映射出這邊的字典對應值
