@@ -36,8 +36,14 @@
     background-color: rgb(234, 239, 244);
     border-radius: 10px;
     overflow: auto;
-}
+    transition: 200ms;
 
+}
+.stock_table:hover{
+    transition: 200ms;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+   
+}
 .stock_table table{
     width: 100%;
     height: 50px;
