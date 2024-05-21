@@ -65,14 +65,17 @@
     top:250px;
     width: 100%;
     display: flex;
-
     justify-content: center;
     align-items: center;
     font-weight: bold;
     color:rgb(48, 9, 84);
-    font-size: 8vw;
     z-index: 3;
-    
+    font-size: 100px;
+}
+@media screen and (max-width: 768px){
+    .Search h1{
+        font-size: 50px;
+    }
 }
 .stock_title {
     width: 100%;
