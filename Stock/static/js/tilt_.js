@@ -1,5 +1,4 @@
 
-console.log('tilt_.js');
 VanillaTilt.init(document.querySelector(".stock_table"), {
     max: 3,
     speed: 200

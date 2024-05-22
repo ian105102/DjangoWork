@@ -1,5 +1,3 @@
-console.log('btn_index.js');
-
 function getCSRFToken() {
     const cookieValue = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
     return decodeURIComponent(cookieValue);

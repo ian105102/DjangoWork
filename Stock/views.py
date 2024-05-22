@@ -3,7 +3,6 @@ from Stock.models import stock_data , stock_info
 from django.http import JsonResponse
 import twstock
 from datetime import datetime
-import json
 # Create your views here.
 
 
@@ -39,7 +38,6 @@ def get(request):
             start_year = last_update.year
             start_month = last_update.month
         
-
         historical_data = stock.fetch_from(start_year, start_month)
 
         for data in historical_data:
@@ -200,7 +198,9 @@ def search(request):
         
         stock_back = Stock_Symbol in ["2330", "2317", "2454", "1301", "1303", "2412", "2308", "2881", "2891", "2892"]
         
-        data_dict = {
+       
+        
+        data_dict = {   
             "time": time,
             "stock_symbol":  stock_symbol,
             "name":  name,

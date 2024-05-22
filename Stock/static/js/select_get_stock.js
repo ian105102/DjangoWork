@@ -1,5 +1,3 @@
-console.log('select_get_stock.js');
-console.log(all_month);
 let select_len = document.querySelector('.select_len');
 let _year_select = document.querySelector('._year_select')
 let _month_select = document.querySelector('._month_select')
