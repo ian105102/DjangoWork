@@ -1,10 +1,10 @@
 
 console.log('tilt_.js');
 VanillaTilt.init(document.querySelector(".stock_table"), {
-    max: 5,
-    speed: 400
+    max: 3,
+    speed: 200
 });
 VanillaTilt.init(document.querySelector(".chart"), {
-    max: 5,
-    speed: 400
+    max: 3,
+    speed: 200
 });

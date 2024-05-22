@@ -16,7 +16,7 @@
 		<h3 class="time">{{Data.time}}</h3>
 	</div>
 	
-	<div class="stock_table floatHeader">
+	<div class="stock_table floatHeader" >
 		<table>
 			<thead>
 				<tr>
@@ -60,8 +60,8 @@
 			</tbody>
 		</table>
 </div>
-
-	<div class="chart">
+	{% if Data.stock_back%}
+	<div class="chart " >
 		<label for="formGroupExampleInput" class="form-label">輸入圖表類型</label>
 		<select class="form-select select_len" aria-label="Default select example">
 			<option value="0">請選擇圖表</option>
@@ -75,11 +75,13 @@
 		</div>
 	</div>
 	{% endif %}
+	{% endif %}
 	<duv class="nothing" ></div>
 </div>
 <script>
 	const all_month = {{Data.all_month}};
 </script>
+
 <script src="{%static 'js/vanilla-tilt.js' %}"></script>
 <script src="{%static 'js/tilt_.js' %}"></script>
 <script src="{%static 'js/select_get_stock.js' %}"></script>

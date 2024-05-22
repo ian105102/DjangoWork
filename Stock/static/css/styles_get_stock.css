@@ -73,9 +73,15 @@
 .chart{
     margin: auto;
     width: 98%;
-    padding: 10px;
+    padding: 20px 10px;
     background-color: rgb(234, 239, 244);
     border-radius: 20px;
+    transition: 200ms;
+
+}
+.chart:hover{
+    transition: 200ms;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
 }
 .chart ._year_select,
 .chart ._month_select{

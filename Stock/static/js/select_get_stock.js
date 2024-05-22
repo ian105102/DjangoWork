@@ -3,6 +3,13 @@ console.log(all_month);
 let select_len = document.querySelector('.select_len');
 let _year_select = document.querySelector('._year_select')
 let _month_select = document.querySelector('._month_select')
+let button_year_chart;
+let button_month_chart;
+let select_year;
+let month_table_select;
+let month_select;
+let year_select;
+
 select_len.addEventListener('change', function() {
     let option = ``;
     let class_name = '';
@@ -40,12 +47,12 @@ select_len.addEventListener('change', function() {
         <option value="-1">請選擇年份</option>
         ` + option + `
         </select>
-        <button class="btn btn-outline-secondary button_year_chart" type="button">顯示圖表</button>
+        <button class="btn btn-outline-primary button_year_chart disabled" type="button">顯示圖表</button>
         </div>
         `;
         _year_select.innerHTML = selectHTML;
-        document.querySelector('.button_year_chart').addEventListener('click', function() {
-            year_select = document.querySelector('.year_table_select').value
+        button_year_chart = document.querySelector('.button_year_chart');
+        button_year_chart.addEventListener('click', function() {
             console.log(document.querySelector('.'+class_name).value);
         });
     }
@@ -53,32 +60,48 @@ select_len.addEventListener('change', function() {
     
     if(class_name == 'year_table_select'){
         select_year = document.querySelector('.year_table_select');
+        button_year_chart = document.querySelector('.button_year_chart');
         select_year.addEventListener('change', function() {
+            if(select_year.value == '-1'){
+                button_year_chart.classList.add('disabled');
+            }else{
+                button_year_chart.classList.remove('disabled');
+            }
+
         });
     }else{
-        select_month = document.querySelector('.'+class_name);
-        select_month.addEventListener('change', function() {
-            if(select_month.value == '-1'){
+        month_table_select = document.querySelector('.month_table_select');
+        month_table_select.addEventListener('change', function() {
+            if(month_table_select.value == '-1'){
                 _month_select.innerHTML = ``;
                 return;
             }else{
                 let option = ``;
-                all_month[select_month.value].forEach(function(key) {
+                all_month[month_table_select.value].forEach(function(key) {
                     option += `<option value="${key}">${key}</option>`;
                 });
                 let selectHTML = `
                 <label for="formGroupExampleInput" class="form-label">輸入月份</label>
                 <div class="input-group">
-                <select class="form-select `+`month_select`+`" aria-label="Default select example">
+                <select class="form-select `+`year_month_select`+`" aria-label="Default select example">
                 <option value="-1">請選擇月份</option>
                 ` + option + `
                 </select>
-                <button class="btn btn-outline-secondary button_month_chart" type="button">顯示圖表</button>
+                <button class="btn btn-outline-primary button_month_chart disabled" type="button">顯示圖表</button>
                 </div>
                 `;
                 _month_select.innerHTML = selectHTML;
-                document.querySelector('.button_month_chart').addEventListener('click', function() {
-                    month_select = document.querySelector('.month_select').value
+                button_month_chart = document.querySelector('.button_month_chart');
+                year_month_select = document.querySelector('.year_month_select');
+                year_month_select.addEventListener('change', function() {
+                    if(year_month_select.value == '-1'){
+                        button_month_chart.classList.add('disabled');
+                    }else{
+                        button_month_chart.classList.remove('disabled');
+                    }
+                });
+                button_month_chart.addEventListener('click', function() {
+                    month_select = document.querySelector('.year_month_select').value
                     year_select = document.querySelector('.'+class_name).value
                     console.log(year_select, month_select);
                 });

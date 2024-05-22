@@ -197,7 +197,9 @@ def search(request):
         open_price = str(unit["realtime"]["open"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["open"]) else str(unit["realtime"]["open"])
         high_price = str(unit["realtime"]["high"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["high"]) else str(unit["realtime"]["high"])
         low_price = str(unit["realtime"]["low"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["low"]) else str(unit["realtime"]["low"])
-                        
+        
+        stock_back = Stock_Symbol in ["2330", "2317", "2454", "1301", "1303", "2412", "2308", "2881", "2891", "2892"]
+        
         data_dict = {
             "time": time,
             "stock_symbol":  stock_symbol,
@@ -214,6 +216,8 @@ def search(request):
             "first_date": first_date,
             "all_month": all_month, 
             "all_year": all_year,
+            "stock_back": stock_back,
+            
         }
 
     except Exception as e:
