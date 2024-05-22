@@ -10,12 +10,12 @@ select_len.addEventListener('change', function() {
         Object.keys(all_month).forEach(function(key) {
             option += `<option value="${key}">${key}</option>`;
         });
-        class_name = 'year_select';
+        class_name = 'year_table_select';
     }else if(select_len.value == '2'){
         Object.keys(all_month).forEach(function(key) {
             option += `<option value="${key}">${key}</option>`;
         });
-        class_name = 'month_select';
+        class_name = 'month_table_select';
     }else{
         _year_select.innerHTML = ``;
         _month_select.innerHTML = ``;
@@ -23,7 +23,7 @@ select_len.addEventListener('change', function() {
     }
     _month_select.innerHTML = ``;
     let selectHTML = ``;
-    if(class_name == 'month_select'){
+    if(class_name == 'month_table_select'){
         selectHTML = `
         <label for="formGroupExampleInput" class="form-label">輸入年份</label>
         <select class="form-select `+class_name+`" aria-label="Default select example">
@@ -45,14 +45,14 @@ select_len.addEventListener('change', function() {
         `;
         _year_select.innerHTML = selectHTML;
         document.querySelector('.button_year_chart').addEventListener('click', function() {
-
-            console.log('button_chart');
+            year_select = document.querySelector('.year_table_select').value
+            console.log(document.querySelector('.'+class_name).value);
         });
     }
     
     
-    if(class_name == 'year_select'){
-        select_year = document.querySelector('.'+class_name);
+    if(class_name == 'year_table_select'){
+        select_year = document.querySelector('.year_table_select');
         select_year.addEventListener('change', function() {
         });
     }else{
@@ -69,8 +69,8 @@ select_len.addEventListener('change', function() {
                 let selectHTML = `
                 <label for="formGroupExampleInput" class="form-label">輸入月份</label>
                 <div class="input-group">
-                <select class="form-select `+class_name+`" aria-label="Default select example">
-                <option value="-1">請選擇年份</option>
+                <select class="form-select `+`month_select`+`" aria-label="Default select example">
+                <option value="-1">請選擇月份</option>
                 ` + option + `
                 </select>
                 <button class="btn btn-outline-secondary button_month_chart" type="button">顯示圖表</button>
@@ -78,7 +78,9 @@ select_len.addEventListener('change', function() {
                 `;
                 _month_select.innerHTML = selectHTML;
                 document.querySelector('.button_month_chart').addEventListener('click', function() {
-                    console.log('button_chart');
+                    month_select = document.querySelector('.month_select').value
+                    year_select = document.querySelector('.'+class_name).value
+                    console.log(year_select, month_select);
                 });
             }
         });
