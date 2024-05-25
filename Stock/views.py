@@ -2,6 +2,7 @@ from django.shortcuts import render
 from Stock.models import stock_data , stock_info
 from django.http import JsonResponse
 import twstock
+from django.views.decorators.http import require_GET
 from datetime import datetime
 # Create your views here.
 
@@ -226,3 +227,35 @@ def search(request):
 
         # 在HTML文件中使用的變數.KEY會映射出這邊的字典對應值
     return render(request, "get_stock.html", {"Data": data_dict ,"error_message": error_message} )
+
+
+@require_GET
+def get_chart(request):
+    year = request.GET.get('year')
+    month = request.GET.get('month')
+
+    if not year:
+        return JsonResponse({'error': 'Year parameter is required'}, status=400)
+
+    try:
+        year = int(year)
+        if month:
+            month = int(month)
+            start_date = datetime(year, month, 1)
+            if month == 12:
+                end_date = datetime(year + 1, 1, 1)
+            else:
+                end_date = datetime(year, month + 1, 1)
+        else:
+            start_date = datetime(year, 1, 1)
+            end_date = datetime(year + 1, 1, 1)
+
+        data = stock_data.objects.filter(
+            date__gte=start_date.strftime('%Y-%m-%d %H:%M:%S'),
+            date__lt=end_date.strftime('%Y-%m-%d %H:%M:%S')
+        )
+    except ValueError:
+        return JsonResponse({'error': 'Year and month must be integers'}, status=400)
+
+    result = list(data.values())
+    return JsonResponse(result, safe=False)

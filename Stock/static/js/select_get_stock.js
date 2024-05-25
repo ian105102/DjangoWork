@@ -50,8 +50,26 @@ select_len.addEventListener('change', function() {
         `;
         _year_select.innerHTML = selectHTML;
         button_year_chart = document.querySelector('.button_year_chart');
-        button_year_chart.addEventListener('click', function() {
-            console.log(document.querySelector('.'+class_name).value);
+        document.querySelector('.button_year_chart').addEventListener('click', function() {
+            let year_select = document.querySelector('.' + class_name).value;
+            console.log(year_select);
+        
+            let url = `http://127.0.0.1:8000/Stock/get_chart/?year=${year_select}`;
+        
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    // 在這裡處理接收到的數據
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                });
         });
     }
     
@@ -98,10 +116,30 @@ select_len.addEventListener('change', function() {
                         button_month_chart.classList.remove('disabled');
                     }
                 });
-                button_month_chart.addEventListener('click', function() {
-                    month_select = document.querySelector('.year_month_select').value
-                    year_select = document.querySelector('.'+class_name).value
+                document.querySelector('.button_month_chart').addEventListener('click', function() {
+                    let month_select = document.querySelector('.year_month_select').value;
+                    let year_select = document.querySelector('.' + class_name).value;
                     console.log(year_select, month_select);
+                
+                    let url = `http://127.0.0.1:8000/Stock/get_chart/?year=${year_select}`;
+                    if (month_select) {
+                        url += `&month=${month_select}`;
+                    }
+                
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log(data);
+                            // 在這裡處理接收到的數據
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with your fetch operation:', error);
+                        });
                 });
             }
         });
