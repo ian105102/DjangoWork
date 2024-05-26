@@ -228,34 +228,81 @@ def search(request):
         # 在HTML文件中使用的變數.KEY會映射出這邊的字典對應值
     return render(request, "get_stock.html", {"Data": data_dict ,"error_message": error_message} )
 
+def calculate_kd(data):
+    # 計算KD指標
+    high_prices = [item['high_price'] for item in data]
+    low_prices = [item['low_price'] for item in data]
+    close_prices = [item['close_price'] for item in data]
 
-@require_GET
+    k_values = []
+    d_values = []
+
+    for i in range(len(data)):
+        if i < 8:  # KD指標需要9天的數據
+            k_values.append(None)
+            d_values.append(None)
+            continue
+
+        highest_high = max(high_prices[i - 8:i + 1])
+        lowest_low = min(low_prices[i - 8:i + 1])
+        current_close = close_prices[i]
+
+        rsv = (current_close - lowest_low) / (highest_high - lowest_low) * 100
+        if i == 8:
+            k_values.append(rsv)
+            d_values.append(rsv)
+        else:
+            k_values.append((k_values[-1] * 2 / 3) + (rsv / 3))
+            d_values.append((d_values[-1] * 2 / 3) + (k_values[-1] / 3))
+    return k_values, d_values
+
+
 def get_chart(request):
+    stock_symbol = request.GET.get('stock_symbol')
     year = request.GET.get('year')
     month = request.GET.get('month')
 
-    if not year:
-        return JsonResponse({'error': 'Year parameter is required'}, status=400)
+    if not stock_symbol:
+        return JsonResponse({'error': 'Stock symbol is required'}, status=400)
 
-    try:
-        year = int(year)
-        if month:
+    if year and not month:
+        try:
+            year = int(year)
+            start_date = datetime(year, 1, 1)
+            end_date = datetime(year + 1, 1, 1)
+            data = stock_data.objects.filter(
+                stock_symbol=stock_symbol,
+                date__gte=start_date,
+                date__lt=end_date
+            )
+        except ValueError:
+            return JsonResponse({'error': 'Year must be an integer'}, status=400)
+    elif year and month:
+        try:
+            year = int(year)
             month = int(month)
             start_date = datetime(year, month, 1)
             if month == 12:
                 end_date = datetime(year + 1, 1, 1)
             else:
                 end_date = datetime(year, month + 1, 1)
-        else:
-            start_date = datetime(year, 1, 1)
-            end_date = datetime(year + 1, 1, 1)
-
-        data = stock_data.objects.filter(
-            date__gte=start_date.strftime('%Y-%m-%d %H:%M:%S'),
-            date__lt=end_date.strftime('%Y-%m-%d %H:%M:%S')
-        )
-    except ValueError:
-        return JsonResponse({'error': 'Year and month must be integers'}, status=400)
-
+            data = stock_data.objects.filter(
+                stock_symbol=stock_symbol,
+                date__gte=start_date,
+                date__lt=end_date
+            )
+        except ValueError:
+            return JsonResponse({'error': 'Year and month must be integers'}, status=400)
+    else:
+        data = stock_data.objects.filter(stock_symbol=stock_symbol)
     result = list(data.values())
+
+    # 計算 KD 指標
+    k_values, d_values = calculate_kd(result)
+
+    # 添加 KD 指標到股票數據
+    for item, k, d in zip(result[8:], k_values[8:], d_values[8:]):
+        item['k_value'] = k
+        item['d_value'] = d
+    
     return JsonResponse(result, safe=False)

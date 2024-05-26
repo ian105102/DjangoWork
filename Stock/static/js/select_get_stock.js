@@ -7,7 +7,8 @@ let select_year;
 let month_table_select;
 let month_select;
 let year_select;
-
+let data;
+console.log(Chart);
 select_len.addEventListener('change', function() {
     let option = ``;
     let class_name = '';
@@ -53,8 +54,8 @@ select_len.addEventListener('change', function() {
         document.querySelector('.button_year_chart').addEventListener('click', function() {
             let year_select = document.querySelector('.' + class_name).value;
             console.log(year_select);
-        
-            let url = `http://127.0.0.1:8000/Stock/get_chart/?year=${year_select}`;
+       
+            let url = 'http://127.0.0.1:8000/Stock/get_chart/?stock_symbol='+stock_symbol+'&year='+year_select;
         
             fetch(url)
                 .then(response => {
@@ -64,7 +65,9 @@ select_len.addEventListener('change', function() {
                     return response.json();
                 })
                 .then(data => {
+                    this.data = data;
                     console.log(data);
+                    renewChart(data, Chart)
                     // 在這裡處理接收到的數據
                 })
                 .catch(error => {
@@ -121,7 +124,7 @@ select_len.addEventListener('change', function() {
                     let year_select = document.querySelector('.' + class_name).value;
                     console.log(year_select, month_select);
                 
-                    let url = `http://127.0.0.1:8000/Stock/get_chart/?year=${year_select}`;
+                    let url = 'http://127.0.0.1:8000/Stock/get_chart/?stock_symbol='+stock_symbol+'&year='+year_select+'&month='+month_select;
                     if (month_select) {
                         url += `&month=${month_select}`;
                     }
@@ -134,7 +137,9 @@ select_len.addEventListener('change', function() {
                             return response.json();
                         })
                         .then(data => {
-                            console.log(data);
+                            this.data = data;
+                            console.log(data);  
+                            renewChart(data, Chart)
                             // 在這裡處理接收到的數據
                         })
                         .catch(error => {
@@ -145,3 +150,49 @@ select_len.addEventListener('change', function() {
         });
     }
 });
+
+function renewChart(data, chart){
+    console.log(data);
+
+        const ohlc = [];
+        const volume = [];
+        const dSeriesData = [];
+        const kSeriesData = [];
+
+        const dataLength = data.length;
+
+        for (let i = 0; i < dataLength; i += 1) {
+            let stockData = data[i];
+            const stockDate = new Date(stockData.date);
+            stockDate.setDate(stockDate.getDate() + 1);
+            const oneDayLaterTimestamp = stockDate.getTime();
+
+            ohlc.push([
+                oneDayLaterTimestamp,
+                parseFloat(stockData.open_price),
+                parseFloat(stockData.high_price),
+                parseFloat(stockData.low_price),
+                parseFloat(stockData.close_price)
+            ]);
+
+            volume.push([
+                oneDayLaterTimestamp,
+                parseInt(stockData.trans_action)
+            ]);
+
+            let date = oneDayLaterTimestamp;
+            let d_value = parseFloat(stockData.d_value);
+            let k_value = parseFloat(stockData.k_value);
+
+            dSeriesData.push([date, d_value]);
+            kSeriesData.push([date, k_value]);
+        }
+
+        // Update the chart series data
+        chart.series[0].setData(ohlc);
+        chart.series[1].setData(volume);
+        chart.series[2].setData(dSeriesData);
+        chart.series[3].setData(kSeriesData);
+
+   
+}
