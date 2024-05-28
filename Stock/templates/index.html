@@ -1,13 +1,12 @@
 {% extends "base/base.html" %}
 {% load static %}
 {% block hend %}
-<link rel="stylesheet" href="{%static 'css/styles_index.css' %}" >
+<link rel="stylesheet" type="text/css" href="{%static 'css/styles_index.css' %}" >
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css"/>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css"/>
 {% endblock hend %}
 
 {% block mainBody %}
-
 <div class="Search" >
     <h1 class="Scroll">股票查詢系統</h1>
     <form class="Search_box" method="GET" action="GS/">
@@ -33,7 +32,7 @@
     <div class="stock_list">
 
         {% for key, value in Data.items %}
-        <div class="card" style="width: 14rem; ">
+        <div class="card" style="width: 16rem; ">
             <img src="{% static value.image %}" class="card-img-top" alt="Company Image">
             <div class="card-body">
             <h5 class="card-title">{{ value.title }}</h5>
@@ -56,9 +55,11 @@
         <li class="Scroll">B1143018 王政翔 負責即時資訊</li>
     </ul>
 </div>
+{% endblock mainBody %}
+
+{% block script %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
 <script src="{%static 'js/slick.js' %}"></script>
 <script src="{%static 'js/btn_index.js' %}"></script>
-
-{% endblock mainBody %}
+{% endblock script %}

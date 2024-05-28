@@ -1,12 +1,13 @@
 ﻿{% extends "base/base.html" %}
 {% load static %}
 {% block hend %}
-<link rel="stylesheet" href="{%static 'css/styles_get_stock.css' %}" >
+<link rel="stylesheet" type="text/css" href="{%static 'css/styles_get_stock.css' %}" >
 {% endblock hend %}
 {% block mainBody %}
 <div class="content">
 	{% if error_message != None %}
 		<h1 style="text-align: center;">查無此股票</h1>
+		<div class="nothing" ></div>
 	{% else %}
 	<div class="stock_title">
 		<h2 class="fullname">{{Data.fullname}}</h2>
@@ -78,24 +79,23 @@
 	<div id="container_kd"></div>
 	{% endif %}
 	{% endif %}
-	<duv class="nothing" ></div>
+	
 </div>
-<script src="https://code.highcharts.com/stock/highstock.js"></script>
-<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
-<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
-
-<script src="{%static 'js/vanilla-tilt.js' %}"></script>
-<script src="{%static 'js/tilt_.js' %}"></script>
-
-{% if error_message == None %}
-<script>
-	const all_month = {{Data.all_month}};
-	const stock_symbol = "{{Data.stock_symbol}}";
-</script>
-<script src="{%static 'js/chart.js' %}"></script>
-<script src="{%static 'js/select_get_stock.js' %}"></script>
-
-{% endif %}
-
 {% endblock mainBody %}
+
+
+
+{% block script %}
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
+	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+
+	<script src="{%static 'js/vanilla-tilt.js' %}"></script>
+	<script src="{%static 'js/tilt_.js' %}"></script>
+
+	{% if error_message == None %}
+		<script src="{%static 'js/chart.js' %}"></script>
+		<script src="{%static 'js/select_get_stock.js' %}"></script>
+	{% endif %}
+{% endblock script %}

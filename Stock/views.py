@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 def get(request):
-    stock_symbols = [
+    stock_symbols = [       ## 這裡是股票代號
         "2330",
         "2317",
         "2454",
@@ -39,7 +39,7 @@ def get(request):
             start_year = last_update.year
             start_month = last_update.month
         
-        historical_data = stock.fetch_from(start_year, start_month)
+        historical_data = stock.fetch_from(start_year, start_month) ## 這裡是從twstock中取出歷史資料
 
         for data in historical_data:
             stock_data.objects.update_or_create(
@@ -58,10 +58,10 @@ def get(request):
             )
 
         # 更新 stock_info 的更新日期到最新的日期
-    if historical_data:
-        last_date = historical_data[-1].date.strftime('%Y-%m-%d')
-        stock_info_record.stock_renew_date = last_date
-        stock_info_record.save()
+    if historical_data:                                             ## 如果有歷史資料
+        last_date = historical_data[-1].date.strftime('%Y-%m-%d')   ## 取出最後一筆資料的日期
+        stock_info_record.stock_renew_date = last_date              ## 將最後一筆資料的日期存入stock_info_record
+        stock_info_record.save()                                    ## 儲存stock_info_record
 
     data = {"message": "資料已成功存入資料庫"}
     return JsonResponse(data)
@@ -72,13 +72,13 @@ def home(request):
 
     try:
         # 變數 = 資料庫名稱.方法(條件)   .first()是指符合條件的第一筆  #還有其他拿資料的方法
-        Stock_Symbol = request.GET.get("stock_symbol")
+        Stock_Symbol = request.GET.get("stock_symbol")  # 取得網址中的參數
         unit = stock_data.objects.filter(
             stock_symbol=Stock_Symbol
         ).last()  # 讀取一筆資料
 
         # 打包到字典
-        data_dict = {
+        data_dict = {   ## 這裡是將資料打包到字典中
             "2330": {
                 "image": "image/2330.jpg",
                 "title": "2330 臺灣積體電路",
@@ -149,14 +149,12 @@ def home(request):
 def search(request):
     data_dict = {}
     error_message = None 
-    # 強烈建議了解資料庫內部結構後再進行操作，例如下載DB.Browser可查看資料庫內容
+
     try:
-        # 變數 = 資料庫名稱.方法(條件)   .first()是指符合條件的第一筆  #還有其他拿資料的方法
         Stock_Symbol = request.GET.get("stock_symbol")
 
         twstock.realtime.mock = False
         unit = twstock.realtime.get(Stock_Symbol)
-        
         
         first_date = stock_data.objects.order_by('date').values_list('date', flat=True).first()
         # 獲取最後一個日期
@@ -187,21 +185,21 @@ def search(request):
         # 打包到字典
         time = datetime.utcfromtimestamp(unit['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
         stock_symbol = unit["info"]["code"]
-        name = unit["info"]["name"]
+        name = unit["info"]["name"]         
         fullname = unit["info"]["fullname"]
         best_bit_price = [str(price).rstrip('0').rstrip('.') if '.' in str(price) else str(price) for price in unit["realtime"]["best_bid_price"]]
-        best_bit_volume = list(map(str, unit["realtime"]["best_bid_volume"]))
+        best_bit_volume = list(map(str, unit["realtime"]["best_bid_volume"]))       
         best_ask_price = [str(price).rstrip('0').rstrip('.') if '.' in str(price) else str(price) for price in unit["realtime"]["best_ask_price"]]
-        best_ask_volume = list(map(str, unit["realtime"]["best_ask_volume"]))
-        open_price = str(unit["realtime"]["open"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["open"]) else str(unit["realtime"]["open"])
-        high_price = str(unit["realtime"]["high"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["high"]) else str(unit["realtime"]["high"])
+        best_ask_volume = list(map(str, unit["realtime"]["best_ask_volume"]))       ## 這裡是取出best_ask_volume的值map()是對best_ask_volume的值進行轉換成str
+        open_price = str(unit["realtime"]["open"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["open"]) else str(unit["realtime"]["open"])   ## rstrip()是去掉右邊的0和.  ## 如果有小數點，就去掉小數點
+        high_price = str(unit["realtime"]["high"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["high"]) else str(unit["realtime"]["high"])   
         low_price = str(unit["realtime"]["low"]).rstrip('0').rstrip('.') if '.' in str(unit["realtime"]["low"]) else str(unit["realtime"]["low"])
         
         stock_back = Stock_Symbol in ["2330", "2317", "2454", "1301", "1303", "2412", "2308", "2881", "2891", "2892"]
         
        
         
-        data_dict = {   
+        data_dict = {                   ## 這裡是將資料打包到字典中
             "time": time,
             "stock_symbol":  stock_symbol,
             "name":  name,
@@ -218,7 +216,6 @@ def search(request):
             "all_month": all_month, 
             "all_year": all_year,
             "stock_back": stock_back,
-            
         }
 
     except Exception as e:
@@ -302,7 +299,7 @@ def get_chart(request):
 
     # 添加 KD 指標到股票數據
     for item, k, d in zip(result[8:], k_values[8:], d_values[8:]):  ## zip()函數用於將可迭代的對象作為參數，將對象中對應的元素打包成一個個元組，然後返回由這些元組組成的列表。
-        item['k_value'] = k
-        item['d_value'] = d
+        item['k_value'] = k                               ## 這裡是將k值加入到item中
+        item['d_value'] = d                                 
     
     return JsonResponse(result, safe=False)
