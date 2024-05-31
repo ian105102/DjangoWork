@@ -1,9 +1,4 @@
 
-// function getCSRFToken() {
-//     const cookieValue = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
-//     return decodeURIComponent(cookieValue);
-// }
-
 BtnRenew = document.querySelector('.btn_renew');
 BtnRenew.addEventListener('click', function() {
     // 將按鈕文字設置為 "等待"

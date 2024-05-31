@@ -30,6 +30,7 @@ body{
 
 
 .header p{
+    user-select: none;
     transition:  500ms;
     margin: 0;
     font-weight: bold;
@@ -38,6 +39,7 @@ body{
     font-weight:bold
 }
 .header.transparent p{
+    user-select: none;
     color: rgb(54, 23, 82);
     transition:  500ms;
 }

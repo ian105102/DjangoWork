@@ -208,6 +208,7 @@ function renewChart(data, chart){
         chart.series[1].setData(volume);
         chart.series[2].setData(dSeriesData);
         chart.series[3].setData(kSeriesData);
-
-   
+        const minDate = ohlc[0][0];
+        const maxDate = ohlc[ohlc.length - 1][0];
+        chart.xAxis[0].setExtremes(minDate, maxDate);
 }

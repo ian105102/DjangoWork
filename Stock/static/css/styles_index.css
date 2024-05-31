@@ -64,6 +64,7 @@
     z-index: 2;
 }
 .Search h1{
+    user-select: none;
     position: absolute;
     top:250px;
     width: 100%;
@@ -75,8 +76,6 @@
     z-index: 3;
     font-size: 8vw;
     margin: auto;
-
-    
 }
 @media screen and (max-width: 768px){
     .Search h1{
@@ -84,6 +83,7 @@
     }
 }
 .stock_title {
+    user-select: none;
     width: 100%;
     margin: 30px 0 20px 0;
     border-bottom: 1px solid black;
