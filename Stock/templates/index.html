@@ -11,8 +11,11 @@
 <div class="Search" >
     <h1 class="Scroll">股票查詢系統</h1>
     <form class="Search_box" method="GET" action="GS/">
-        <input type="text" id="stock_symbol" name="stock_symbol" placeholder="請輸入股票代號" required>
-        <button type="submit">Search</button>
+        <div class="input_contnet">
+            <input  type="text" id="stock_symbol" name="stock_symbol" placeholder="請輸入股票代號" required>
+            <button class="submit_btn" type="submit">Search</button>
+        </div>
+        <div class="Down_menu"></div>
     </form>
     <div class="slider">
         <div>
@@ -59,6 +62,7 @@
 {% endblock mainBody %}
 
 {% block script %}
+<script src="{%static 'js/index.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
 <script src="{%static 'js/slick.js' %}"></script>

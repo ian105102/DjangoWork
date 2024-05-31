@@ -87,9 +87,7 @@
 
 
 {% block script %}
-	<script>
-		const all_month = {{Data.all_month}};
-	</script>
+
 	<script src="https://code.highcharts.com/stock/highstock.js"></script>
 	<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
 	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
@@ -98,7 +96,11 @@
 	<script src="{%static 'js/vanilla-tilt.js' %}"></script>
 	<script src="{%static 'js/tilt_.js' %}"></script>
 
+
 	{% if error_message == None %}
+	<script>
+		const all_month = {{Data.all_month}};
+	</script>
 		<script src="{%static 'js/chart.js' %}"></script>
 		<script src="{%static 'js/select_get_stock.js' %}"></script>
 	{% endif %}
