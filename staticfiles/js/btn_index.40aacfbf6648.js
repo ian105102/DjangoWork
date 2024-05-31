@@ -15,7 +15,9 @@ BtnRenew.addEventListener('click', function() {
     
  
 
-    fetch(url_+'Stock/renew/')
+    fetch('https://carefully-unified-duck.ngrok-free.app/Stock/renew/'//, {
+
+)
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');

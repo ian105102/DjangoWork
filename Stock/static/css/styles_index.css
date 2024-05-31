@@ -155,7 +155,7 @@
     transition: width 1000ms;
   }
 .Search_box button:hover::before {
-    width: 250%;
+    width: 300%;
     transform: skewX(-45deg);
   }
 .member_list{

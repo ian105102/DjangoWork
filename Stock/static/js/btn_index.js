@@ -15,9 +15,7 @@ BtnRenew.addEventListener('click', function() {
     
  
 
-    fetch('https://carefully-unified-duck.ngrok-free.app/Stock/renew/'//, {
-
-)
+    fetch(url_+'Stock/renew/')
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -27,7 +25,7 @@ BtnRenew.addEventListener('click', function() {
     .then(data => {
         // 資料成功存入資料庫
         console.log('成功:', data);
-        BtnRenew.textContent = '資料已成功存入資料庫';
+        BtnRenew.textContent = '成功存入資料庫';
         setTimeout(() => {
             BtnRenew.textContent = '更新';
             BtnRenew.disabled = false; // 重新啟用按鈕
