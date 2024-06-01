@@ -6,6 +6,7 @@
 }
 .content{
     width: 80%;
+    max-width: 1600px;
     margin: auto;
 }
 .nothing{

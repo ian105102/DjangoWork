@@ -3,9 +3,11 @@ BtnRenew = document.querySelector('.btn_renew');
 BtnRenew.addEventListener('click', function() {
     // 將按鈕文字設置為 "等待"
     console.log('按鈕被點擊');
-    BtnRenew.innerHTML = '<div class="spinner-border text-primary spinner-grow-sm m-1" role="status">' +
-    '<span class="visually-hidden">Loading...</span>' +
-  '</div>';
+    BtnRenew.insertAdjacentHTML('beforeend', `
+    <div class="spinner-border text-primary spinner-grow-sm m-1" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  `);
     BtnRenew.disabled = true; // 禁用按鈕防止重複點擊
     
  
