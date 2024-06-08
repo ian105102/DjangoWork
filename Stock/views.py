@@ -187,7 +187,7 @@ def search(request):
         #     stock_symbol=Stock_Symbol
         # ).last()  # 讀取一筆資料
         # 打包到字典
-        time = datetime.utcfromtimestamp(unit['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
+        time = unit["info"]["time"]
         stock_symbol = unit["info"]["code"]
         name = unit["info"]["name"]         
         fullname = unit["info"]["fullname"]
