@@ -315,4 +315,4 @@ def get_chart(request):   ## 這裡是用來取得圖表的資料
         item['k_value'] = k                                         ## 這裡是將k值加入到item中
         item['d_value'] = d                                 
     
-    return JsonResponse(result, safe=False) ## 返回json格式的資料
+    return JsonResponse(result, safe=False) ##直接返回list不使用json比較方便
