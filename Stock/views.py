@@ -4,6 +4,7 @@ from django.http import JsonResponse
 import twstock
 from django.views.decorators.http import require_GET
 from datetime import datetime
+import math
 # Create your views here.
 
 ## 因為沒有把這些資料存入資料庫中，所以這邊設定預設值，
@@ -160,7 +161,7 @@ def search(request):
         twstock.realtime.mock = False
         unit = twstock.realtime.get(Stock_Symbol)
         
-        first_date = stock_data.objects.order_by('date').values_list('date', flat=True).first()
+        first_date = stock_data.objects.order_by('date').values_list('date', flat=True).first() 
         # 獲取最後一個日期
         last_date = stock_data.objects.order_by('-date').values_list('date', flat=True).first()
 
@@ -267,52 +268,65 @@ def calculate_kd(data):
     return k_values, d_values
 
 
-def get_chart(request):   ## 這裡是用來取得圖表的資料
-    stock_symbol = request.GET.get('stock_symbol')      ## 這裡是從網址中取得股票代號
-    year = request.GET.get('year')                      ## 這裡是從網址中取得年份
-    month = request.GET.get('month')                    ## 這裡是從網址中取得月份
+
+
+def get_chart(request):
+    stock_symbol = request.GET.get('stock_symbol')
+    year = request.GET.get('year')
+    month = request.GET.get('month')
 
     if not stock_symbol:
-        return JsonResponse({'error': 'Stock symbol is required'}, status=400)  ## 如果沒有股票代號，返回錯誤訊息
+        return JsonResponse({'error': 'Stock symbol is required'}, status=400)
 
-    if year and not month: ## 如果有年份但沒有月份
+    
+
+    if year and not month:
         try:
             year = int(year)
-            start_date = datetime(year, 1, 1)       ## start_date是該年的1月1號
-            end_date = datetime(year + 1, 1, 1)     ## end_date是下一年的1月1號
-            data = stock_data.objects.filter(       ## 這裡是從資料庫中找出符合條件的資料
-                stock_symbol=stock_symbol,          ## stock_symbol是股票代號
-                date__gte=start_date,               ## date__gte是指日期大於等於start_date
-                date__lt=end_date                   ## date__lt是指日期小於end_date
+            start_date = datetime(year, 1, 1)
+            end_date = datetime(year + 1, 1, 1)
+            data = stock_data.objects.filter(
+                stock_symbol=stock_symbol,
+                date__gte=start_date,
+                date__lt=end_date
             )
         except ValueError:
-            return JsonResponse({'error': 'Year must be an integer'}, status=400)   ## 如果年份不是整數，返回錯誤訊息
-    elif year and month:    ## 如果有年份和月份
+            return JsonResponse({'error': 'Year must be an integer'}, status=400)
+    elif year and month:
         try:
             year = int(year)
             month = int(month)
-            start_date = datetime(year, month, 1)       ## start_date是該年的該月1號
-            if month == 12:                             ## 如果是12月
-                end_date = datetime(year + 1, 1, 1)     ## end_date是下一年的1月1號
-            else:                                       ## 如果不是12月                    
-                end_date = datetime(year, month + 1, 1) ## end_date是該年的下一個月1號
-            data = stock_data.objects.filter(           ## 這裡是從資料庫中找出符合條件的資料
-                stock_symbol=stock_symbol,              ## stock_symbol是股票代號
-                date__gte=start_date,                    ## date__gte是指日期大於等於start_date 
-                date__lt=end_date                       ## date__lt是指日期小於end_date
-            )   
+            start_date = datetime(year, month, 1)
+            if month == 12:
+                end_date = datetime(year + 1, 1, 1)
+            else:
+                end_date = datetime(year, month + 1, 1)
+            data = stock_data.objects.filter(
+                stock_symbol=stock_symbol,
+                date__gte=start_date,
+                date__lt=end_date
+            )
         except ValueError:
-            return JsonResponse({'error': 'Year and month must be integers'}, status=400)   ## 如果年份和月份不是整數，返回錯誤訊息
+            return JsonResponse({'error': 'Year and month must be integers'}, status=400)
     else:
-        data = stock_data.objects.filter(stock_symbol=stock_symbol)     ## 這裡是從資料庫中找出符合條件的資料
-    result = list(data.values())                                        ## 這裡是將資料轉換為列表   
+        data = stock_data.objects.filter(stock_symbol=stock_symbol)
 
-    # 計算 KD 指標
-    k_values, d_values = calculate_kd(result)
+    result = []
+    for entry in data:
+        # 將 entry 中的資訊以及轉換後的日期物件加入到 result 列表中
+        date_str = entry.date.split()[0]
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+        result.append({
+            'date': date_obj.strftime('%Y-%m-%d'),
+            'close_price': float(entry.close_price),
+            'open_price': float(entry.open_price),
+            'timestamp': date_obj.strftime('%Y-%m-%d'),
+            'open': float(entry.open_price),
+            'high': float(entry.high_price),
+            'low': float(entry.low_price),
+            'close': float(entry.close_price),
+            'volume': entry.total_capacity,
+            'turnover': float(entry.total_turnover),
+        })
 
-    # 添加 KD 指標到股票數據
-    for item, k, d in zip(result[8:], k_values[8:], d_values[8:]):  ## zip()函數用於將可迭代的對象作為參數，將對象中對應的元素打包成一個個元組，然後返回由這些元組組成的列表。
-        item['k_value'] = k                                         ## 這裡是將k值加入到item中
-        item['d_value'] = d                                 
-    
-    return JsonResponse(result, safe=False) ##直接返回list不使用json比較方便
+    return JsonResponse(result, safe=False)

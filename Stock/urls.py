@@ -7,4 +7,5 @@ urlpatterns = [
     path("renew/", views.get , name="getdata"),
     path("GS/", views.search , name="search"),
     re_path("GS/$", views.search , name="search"),
+
 ]
