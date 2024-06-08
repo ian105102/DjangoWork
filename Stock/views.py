@@ -210,7 +210,7 @@ def search(request):
         high_price = format_price(unit["realtime"]["high"]) ## 這裡是取出最高價
         low_price = format_price(unit["realtime"]["low"])   ## 這裡是取出最低價
         
-        stock_back = Stock_Symbol in all_stock.keys()       ## 這裡是判斷股票代號是否在all_stock中
+        stock_back = Stock_Symbol in all_stock   ##輸入的股票代號是否在列表中
         
         data_dict = {                   ## 這裡是將資料打包到字典中
             "time": time,
