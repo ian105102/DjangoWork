@@ -1,4 +1,4 @@
-console.log('index.js loaded')
+
 let input = document.querySelector('.input_contnet input');
 let Search_box = document.querySelector('.Search_box');
 let button = document.querySelector('.submit_btn');
