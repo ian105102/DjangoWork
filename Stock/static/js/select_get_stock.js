@@ -24,28 +24,9 @@ select_len.addEventListener('change', function() {
     }else{
         _year_select.innerHTML = ``;
         _month_select.innerHTML = ``;
-
-
+        
         fetchHistoricalData(0, null, null)
-        // let url = url_+'/Stock/get_chart/?stock_symbol='+stock_symbol;
-
-        //  fetch(url)
-        //     .then(response => {
-        //         if (!response.ok) {
-        //             throw new Error('Network response was not ok ' + response.statusText);
-        //         }
-        //         return response.json();
-        //     })
-        //     .then(data => {
-        //         this.data = data;
-
-        //         renewChart(data, Chart)
-        //         // 在這裡處理接收到的數據
-        //     })
-        //     .catch(error => {
-        //         console.error('There was a problem with your fetch operation:', error);
-        //     });
-        // return;
+        return;
     }
     _month_select.innerHTML = ``;
     let selectHTML = ``;
@@ -74,25 +55,7 @@ select_len.addEventListener('change', function() {
         document.querySelector('.button_year_chart').addEventListener('click', function() {
             let year_select = document.querySelector('.' + class_name).value;
             fetchHistoricalData(1, year_select, null)
-       
-            // let url = url_+'Stock/get_chart/?stock_symbol='+stock_symbol+'&year='+year_select;
-        
-            // fetch(url)
-            //     .then(response => {
-            //         if (!response.ok) {
-            //             throw new Error('Network response was not ok ' + response.statusText);
-            //         }
-            //         return response.json();
-            //     })
-            //     .then(data => {
-            //         this.data = data;
-
-            //         renewChart(data, Chart)
-            //         // 在這裡處理接收到的數據
-            //     })
-            //     .catch(error => {
-            //         console.error('There was a problem with your fetch operation:', error);
-            //     });
+            return;
         });
     }
     
@@ -138,79 +101,16 @@ select_len.addEventListener('change', function() {
                     }else{
                         button_month_chart.classList.remove('disabled');
                     }
+                    return;
                 });
                 document.querySelector('.button_month_chart').addEventListener('click', function() {
                     let month_select = document.querySelector('.year_month_select').value;
                     let year_select = document.querySelector('.' + class_name).value;
                     fetchHistoricalData(2, year_select, month_select)
-                    // let url = url_+'Stock/get_chart/?stock_symbol='+stock_symbol+'&year='+year_select+'&month='+month_select;
-                    // if (month_select) {
-                    //     url += `&month=${month_select}`;
-                    // }
-                
-                    // fetch(url)
-                    //     .then(response => {
-                    //         if (!response.ok) {
-                    //             throw new Error('Network response was not ok ' + response.statusText);
-                    //         }
-                    //         return response.json();
-                    //     })
-                    //     .then(data => {
-                    //         this.data = data;
-
-                    //         renewChart(data, Chart)
-                    //         // 在這裡處理接收到的數據
-                    //     })
-                    //     .catch(error => {
-                    //         console.error('There was a problem with your fetch operation:', error);
-                    //     });
+                    return;
                 });
             }
         });
     }
 });
 
-// function renewChart(data, chart){
-//         const ohlc = [];
-//         const volume = [];
-//         const dSeriesData = [];
-//         const kSeriesData = [];
-
-//         const dataLength = data.length;
-
-//         for (let i = 0; i < dataLength; i += 1) {
-//             let stockData = data[i];
-//             const stockDate = new Date(stockData.date);
-//             stockDate.setDate(stockDate.getDate() + 1);
-//             const oneDayLaterTimestamp = stockDate.getTime();
-
-//             ohlc.push([
-//                 oneDayLaterTimestamp,
-//                 parseFloat(stockData.open_price),
-//                 parseFloat(stockData.high_price),
-//                 parseFloat(stockData.low_price),
-//                 parseFloat(stockData.close_price)
-//             ]);
-
-//             volume.push([
-//                 oneDayLaterTimestamp,
-//                 parseInt(stockData.trans_action)
-//             ]);
-
-//             let date = oneDayLaterTimestamp;
-//             let d_value = parseFloat(stockData.d_value);
-//             let k_value = parseFloat(stockData.k_value);
-
-//             dSeriesData.push([date, d_value]);
-//             kSeriesData.push([date, k_value]);
-//         }
-
-//         // Update the chart series data
-//         chart.series[0].setData(ohlc);
-//         chart.series[1].setData(volume);
-//         chart.series[2].setData(dSeriesData);
-//         chart.series[3].setData(kSeriesData);
-//         const minDate = ohlc[0][0];
-//         const maxDate = ohlc[ohlc.length - 1][0];
-//         chart.xAxis[0].setExtremes(minDate, maxDate);
-// }
