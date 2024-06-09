@@ -98,3 +98,13 @@
 #chart_image{
     margin: 50px auto; 
 }
+.btn_renew{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+    --bs-btn-bg:blueviolet ;
+    --bs-btn-color: white;
+    --bs-btn-hover-bg: rgb(215, 79, 206) ;
+}
