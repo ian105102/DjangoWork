@@ -9,10 +9,17 @@ button.addEventListener('click', function() {
     let inputValue = input.value.trim();
     let queue = getQueueFromCookie();
 
-    if (queue.includes(inputValue) || inputValue.length<1) {
+    if (inputValue.length < 1) {
         return; 
     }
 
+    // 如果 inputValue 已經在 queue 中，先移除它
+    const index = queue.indexOf(inputValue);
+    if (index !== -1) {
+        queue.splice(index, 1);
+    }
+
+    // 確保 queue 的長度不超過 4
     if (queue.length >= 4) {
         queue.shift(); 
     }
