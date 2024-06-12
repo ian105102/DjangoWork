@@ -29,7 +29,7 @@
         const stock_symbol = "{{Data.stock_symbol}}";
     </script>
 ```
-###確認執行完畢後輸入
+###確認執行完畢後輸入,即可完成執行!!!
 ```
 python manage.py runserver
 ```
