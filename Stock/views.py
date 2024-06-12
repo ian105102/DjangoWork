@@ -310,7 +310,7 @@ def get_chart(request):
             return JsonResponse({'error': 'Year and month must be integers'}, status=400)
     else:
         data = stock_data.objects.filter(stock_symbol=stock_symbol)
-
+    
     result = []
     for entry in data:
         # 將 entry 中的資訊以及轉換後的日期物件加入到 result 列表中
