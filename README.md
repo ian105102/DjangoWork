@@ -3,7 +3,7 @@
 #### 使用python django 框架製作
 
  #### 介紹影片:
-[![YouTube](https://img.youtube.com/vi/F4XQGUMBCLY/0.jpg)](https://www.youtube.com/watch?v=F4XQGUMBCLY)
+[![YouTube](https://img.youtube.com/vi/HCPI-WWW7uQ/0.jpg)](https://youtu.be/HCPI-WWW7uQ)
 
 ## 使用方式
 ### 使用到的python套件:
