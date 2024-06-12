@@ -26,6 +26,7 @@
 * wheel               0.41.2
 * whitenoise          6.6.0
 ### **注意 在檔案base.html 需要url_改成當下的伺服器地址**
+### 資料夾位置 `DjangoWork\Stock\templates\base\base.html`
 ```html
     <script>
         const url_ ="https://carefully-unified-duck.ngrok-free.app/"  //改這裡!!!
