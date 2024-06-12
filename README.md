@@ -1,7 +1,9 @@
 # 股票查詢系統
 ## 基礎介紹
-使用python django 框架製作
+#### 使用python django 框架製作
 
+ #### 介紹影片:
+ [<https://youtu.be/rPRQvyheCC4>](https://youtu.be/F4XQGUMBCLY)
 ## 使用方式
 ### 使用到的python套件:
 * asgiref             3.8.1 
@@ -29,7 +31,7 @@
         const stock_symbol = "{{Data.stock_symbol}}";
     </script>
 ```
-###確認執行完畢後輸入,即可完成執行!!!
+###確認以上執行完畢後再終端機輸入以下code,即可完成執行!!!
 ```
 python manage.py runserver
 ```
