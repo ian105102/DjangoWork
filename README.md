@@ -2,7 +2,8 @@
 ## 基礎介紹
 #### 使用python django 框架製作
 
- #### 介紹影片:<https://youtu.be/F4XQGUMBCLY>
+ #### 介紹影片:
+[![YouTube](https://img.youtube.com/vi/F4XQGUMBCLY/0.jpg)](https://www.youtube.com/watch?v=F4XQGUMBCLY)
 
 ## 使用方式
 ### 使用到的python套件:
