@@ -33,7 +33,7 @@
         const stock_symbol = "{{Data.stock_symbol}}";
     </script>
 ```
-###確認以上執行完畢後再終端機輸入以下code,即可完成執行!!!
+### 確認以上執行完畢後再終端機輸入以下code,即可完成執行!!!
 ```
 python manage.py runserver
 ```
