@@ -2,8 +2,8 @@
 ## 基礎介紹
 #### 使用python django 框架製作
 
- #### 介紹影片:
- [<https://youtu.be/rPRQvyheCC4>](https://youtu.be/F4XQGUMBCLY)
+ #### 介紹影片:<https://youtu.be/F4XQGUMBCLY>
+
 ## 使用方式
 ### 使用到的python套件:
 * asgiref             3.8.1 
