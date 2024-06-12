@@ -29,7 +29,7 @@
 ### 資料夾位置 `DjangoWork\Stock\templates\base\base.html`
 ```html
     <script>
-        const url_ ="https://carefully-unified-duck.ngrok-free.app/"  //改這裡!!!
+        const url_ ="https://你的伺服器地址/"  //改這裡!!!
         const stock_symbol = "{{Data.stock_symbol}}";
     </script>
 ```
