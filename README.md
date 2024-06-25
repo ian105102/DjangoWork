@@ -33,6 +33,10 @@
         const stock_symbol = "{{Data.stock_symbol}}";
     </script>
 ```
+### 確認以上執行完畢後再終端機輸入，外帶靜態檔案
+```
+python manage.py collectstatic
+```
 ### 確認以上執行完畢後再終端機輸入
 ```
 python manage.py runserver
